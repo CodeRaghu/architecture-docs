@@ -1,0 +1,63 @@
+name: Compile Diagrams & Deploy Docs
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-packages: 'pip'
+
+      - name: Install Python Requirements
+        run: |
+          pip install -r requirements.txt
+
+      - name: Render Diagrams-As-Code
+        run: |
+          python generate_diagrams.py
+
+      - name: Install Static Site Generator
+        run: |
+          pip install mkdocs-material
+
+      - name: Build Static HTML Site
+        run: |
+          # Convert Markdown and images into a production-ready website format
+          npx static-publisher-cli --src docs --dest public || cp -r docs _site
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # If using static fallback, upload the docs folder directly
+          path: 'docs'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
