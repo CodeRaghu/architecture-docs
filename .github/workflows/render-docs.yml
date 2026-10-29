@@ -40,12 +40,6 @@ jobs:
         run: |
           python generate_diagrams.py
 
-      # This step copies the generated images and markdown files into a clean workspace for deployment
-      - name: Prepare Workspace for Deployment
-        run: |
-          mkdir -p _site
-          cp -r docs/* _site/
-
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
@@ -53,7 +47,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Target the prepared workspace folder
-          path: '_site'
+          path: '.'
 
       - name: Deploy to GitHub Pages
         id: deployment
