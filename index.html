@@ -15,7 +15,7 @@
     <div id="content">Loading documentation...</div>
     <script>
         // Dynamically fetch and render the index.md content natively in the browser
-        fetch('docs/index.md')
+        fetch('./docs/index.md')
             .then(response => response.text())
             .then(text => {
                 document.getElementById('content').innerHTML = marked.parse(text);
