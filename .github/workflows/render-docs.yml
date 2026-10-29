@@ -40,14 +40,11 @@ jobs:
         run: |
           python generate_diagrams.py
 
-      - name: Install Static Site Generator
+      # This step copies the generated images and markdown files into a clean workspace for deployment
+      - name: Prepare Workspace for Deployment
         run: |
-          pip install mkdocs-material
-
-      - name: Build Static HTML Site
-        run: |
-          # Convert Markdown and images into a production-ready website format
-          npx static-publisher-cli --src docs --dest public || cp -r docs _site
+          mkdir -p _site
+          cp -r docs/* _site/
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
@@ -55,8 +52,8 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # If using static fallback, upload the docs folder directly
-          path: 'docs'
+          # Target the prepared workspace folder
+          path: '_site'
 
       - name: Deploy to GitHub Pages
         id: deployment
