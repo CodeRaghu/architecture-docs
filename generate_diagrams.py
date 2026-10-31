@@ -1,24 +1,22 @@
-import os
-from diagrams import Diagram, Cluster
-from diagrams.aws.compute import EC2
-from diagrams.aws.database import RDS
-from diagrams.aws.network import ELB
+"""Render every diagrams-as-code script in diagrams/ to docs/assets/.
 
-# Ensure the output asset directory exists
+Run from the repo root: python generate_diagrams.py
+"""
+import os
+import runpy
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+os.chdir(ROOT)
 os.makedirs("docs/assets", exist_ok=True)
 
-with Diagram(
-    name="Company Core Architecture", 
-    show=False, 
-    filename="docs/assets/system_architecture",
-    outformat="png"
-):
-    lb = ELB("Ingress Load Balancer")
-    
-    with Cluster("Application Tier"):
-        web_servers = [EC2("Worker Nodes 1"),
-                       EC2("Worker Nodes 2")]
+scripts = sorted(Path("diagrams").glob("*.py"))
+if not scripts:
+    sys.exit("No diagram scripts found in diagrams/")
 
-    db = RDS("Primary Database Instance")
+for script in scripts:
+    print(f"Rendering {script}")
+    runpy.run_path(str(script), run_name="__main__")
 
-    lb >> web_servers >> db
+print(f"Rendered {len(scripts)} diagram(s) to docs/assets/")

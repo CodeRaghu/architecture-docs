@@ -1,13 +1,22 @@
-# Engineering Design Documents
+# PayNTax Engineering Docs
 
-Welcome to our centralized architecture documentation portal. This portal is maintained dynamically using Diagrams-as-Code.
+Tax prep for solo CPAs: scan W-2s and pay stubs, extract fields, CPA reviews, fill the 1040. Pilot launch **18 Dec 2026**; e-file and business returns in 2027; payroll later.
 
-## Core System Architecture
+## Start here
 
-Below is the latest infrastructure blueprint, compiled directly from Python source code:
+| | |
+|---|---|
+| 📋 [TODO list](delivery/TODO.md) | Every task by phase and sprint, with owners and milestones |
+| 🔁 [Delivery plan](delivery/delivery-plan.md) | Sprint rhythm, workflow, Definition of Done, branching, environments, risks |
+| 🛠 [Development setup](setup/development-setup.md) | Tools, local stack, secrets and data rules, onboarding checklist |
+| 📝 [Requirements](requirements/README.md) | Functional and non-functional requirements with IDs |
+| 🖥 [Screens](screens/README.md) | Screen inventory, navigation, user flows, wireframes |
+| ✅ [Test strategy](testing/test-strategy.md) | Test levels, synthetic data, extraction accuracy, traceability |
+| 🏗 [Architecture](architecture/README.md) | AWS architecture, CI/CD, data model, ADRs |
+| 📂 [Planning notes](planning/01-kickoff-notes.md) | Kickoff notes and [draft plan](planning/02-draft-plan.md) |
 
-![System Infrastructure Map](assets/system_architecture.png)
+## Core system architecture
 
-## Architecture Logs
-* **Author:** Architecture Review Board
-* **Last Code Review Update:** October 2026
+![PayNTax AWS architecture](assets/aws_architecture.png)
+
+Diagrams are code: Python files in `diagrams/` (cloud, with AWS icons) and Mermaid inside these Markdown pages (flows, sequences, data model).
